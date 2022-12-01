@@ -1,0 +1,87 @@
+:root {
+  --size: 4;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family: Gotham Rounded, sans-serif;
+  font-weight: normal;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  background: linear-gradient(to right, #00aaff, #00ff6c);
+}
+
+input {
+  font-size: 0.9rem;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+input:active,
+input:focus {
+  border: 0;
+  /* outline: none;   */
+}
+.w-100 {
+  min-width: 100%;
+}
+.m-2rem {
+  margin: 2rem;
+}
+
+.header-title {
+  margin: 0.2rem;
+}
+
+.all-vh {
+  height: 100vh;
+}
+
+.matrix-grid {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  grid-template-columns: repeat(var(--size), 30px);
+  grid-template-rows: minmax(30px, auto) repeat(var(--size), 30px);
+}
+
+.flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-container-expand {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.flex-container-even {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.flex-container-space {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+.multiply-button {
+  height: 2rem;
+  width: 9rem;
+  margin: 0.2rem;
+}
+
+.multiply-button:hover {
+  cursor: pointer;
+}
