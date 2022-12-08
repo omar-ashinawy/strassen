@@ -1,51 +1,56 @@
 class CustomMath {
     /*
-    A class that exposes static methods. These methods implement mathematical concepts used in both normal and Strassens matrix multiplication.
-    Methods:
-        zeros:
-            Public method. Returns a matrix of zeros given the dimensions of the matrix.
-        performOperation: 
-            Private method. Takes two matrices and the operation type (addition or subtraction). Returns the result matrix.
-        add:
-            Public method. Calls performOperation method to perform addition and returns the result matrix.
-        subtract: 
-            Public method. Calls performOperation method to perform subtraction and returns the result matrix.
-        multiplyNormal: 
-            Public method. Using the normal O(n^3) algorithm, it multiplies two input matrices and returns the result matrix.
-        splitQuarter:
-            Private method. Used during multiplying two matrices using Strassens method. It returns a quarter of a given matrix at a given starting point (startRow, startCol).
-        split:
-            Private method. Used during multiplying two matrices using Strassens method. Uses splitQuarter to return the 4 quarters of a given matrix.
-        rowStack:
-            Public method. Stacks two matrices horizontally. Used to assemble the intermediate matrices during Strassens multiplication.
-        colStack:
-            Public method. Stacks two matrices vertically. Used to assemble the intermediate matrices during Strassens multiplication.
-        multiplyStrassens:
-            Public method. Multiplies two matrices using Strassens method and returns the result matrix.
-        getResultString:
-            Public method. Returns a formatted string represnting a matrix for MathJax to detect and transform into an image of written matrix.
-        getMultiplicationString:
-            Public method. Returns a formatted string represnting a multiplication equation of two matrices for MathJax to detect and transform into an image of equation.
-    */
-    static zeros(size) {
-        let mat = []
+      A class that exposes static methods. These methods implement mathematical concepts used in both normal and Strassens matrix multiplication.
+      Methods:
+          zeros:
+              Public method. Returns a matrix of zeros given the dimensions of the matrix.
+          performOperation: 
+              Private method. Takes two matrices and the operation type (addition or subtraction). Returns the result matrix.
+          add:
+              Public method. Calls performOperation method to perform addition and returns the result matrix.
+          subtract: 
+              Public method. Calls performOperation method to perform subtraction and returns the result matrix.
+          multiplyNormal: 
+              Public method. Using the normal O(n^3) algorithm, it multiplies two input matrices and returns the result matrix.
+          splitQuarter:
+              Private method. Used during multiplying two matrices using Strassens method. It returns a quarter of a given matrix at a given starting point (startRow, startCol).
+          split:
+              Private method. Used during multiplying two matrices using Strassens method. Uses splitQuarter to return the 4 quarters of a given matrix.
+          rowStack:
+              Public method. Stacks two matrices horizontally. Used to assemble the intermediate matrices during Strassens multiplication.
+          colStack:
+              Public method. Stacks two matrices vertically. Used to assemble the intermediate matrices during Strassens multiplication.
+          multiplyStrassens:
+              Public method. Multiplies two matrices using Strassens method and returns the result matrix.
+          getResultString:
+              Public method. Returns a formatted string represnting a matrix for MathJax to detect and transform into an image of written matrix.
+          getMultiplicationString:
+              Public method. Returns a formatted string represnting a multiplication equation of two matrices for MathJax to detect and transform into an image of equation.
+      */
+    static #fillWith(size, number) {
+        let mat = [];
         for (let i = 0; i < size[0]; i++) {
-            let rowMat = []
+            let rowMat = [];
             for (let j = 0; j < size[1]; j++) {
-                rowMat.push(0);
+                rowMat.push(number);
             }
             mat.push(rowMat);
         }
         return mat;
     }
+    static zeros(size) {
+        return this.#fillWith(size, 0);
+    }
+    static ones(size) {
+        return this.#fillWith(size, 1);
+    }
     static #performOperation(matA, matB, addition) {
-        if (typeof (matA) === 'number' || typeof (matB) === 'number') {
-            return addition ? (matA + matB) : (matA - matB);
-        }
-        else if (!matA[0].length && !matB[0].length) {
+        if (typeof matA === "number" || typeof matB === "number") {
+            return addition ? matA + matB : matA - matB;
+        } else if (!matA[0].length && !matB[0].length) {
             let matC = [];
             for (let i = 0; i < rowSizeA; i++) {
-                matC.push(addition ? (matA[i] + matB[i]) : (matA[i] - matB[i]));
+                matC.push(addition ? matA[i] + matB[i] : matA[i] - matB[i]);
             }
             return matC;
         }
@@ -59,7 +64,9 @@ class CustomMath {
             let matC = this.zeros([rowSize, colSize]);
             for (let i = 0; i < rowSizeA; i++) {
                 for (let j = 0; j < colSizeA; j++) {
-                    matC[i][j] = addition ? (matA[i][j] + matB[i][j]) : (matA[i][j] - matB[i][j]);
+                    matC[i][j] = addition
+                        ? matA[i][j] + matB[i][j]
+                        : matA[i][j] - matB[i][j];
                 }
             }
             return matC;
@@ -88,7 +95,7 @@ class CustomMath {
     static #splitQuarter(mat, startRow, startCol) {
         const endRow = startRow + mat.length / 2;
         const endCol = startCol + mat[0].length / 2;
-        let splittedMat = []
+        let splittedMat = [];
         for (let i = startRow; i < endRow; i++) {
             let rowSplittedMat = [];
             for (let j = startCol; j < endCol; j++) {
@@ -100,26 +107,26 @@ class CustomMath {
     }
     static #split(mat) {
         const rowLength = mat.length;
-        const colLength = mat[0].length
+        const colLength = mat[0].length;
         if (rowLength === 2) {
             return {
-                '1': mat[0][0],
-                '2': mat[0][1],
-                '3': mat[1][0],
-                '4': mat[1][1]
+                1: mat[0][0],
+                2: mat[0][1],
+                3: mat[1][0],
+                4: mat[1][1],
             };
         }
         const hRowLength = rowLength / 2;
         const hColLength = colLength / 2;
         return {
-            '1': this.#splitQuarter(mat, 0, 0),
-            '2': this.#splitQuarter(mat, 0, hColLength),
-            '3': this.#splitQuarter(mat, hRowLength, 0),
-            '4': this.#splitQuarter(mat, hRowLength, hColLength)
+            1: this.#splitQuarter(mat, 0, 0),
+            2: this.#splitQuarter(mat, 0, hColLength),
+            3: this.#splitQuarter(mat, hRowLength, 0),
+            4: this.#splitQuarter(mat, hRowLength, hColLength),
         };
     }
     static rowStack(matA, matB) {
-        if (typeof (matA) === 'number' && typeof (matB) === 'number') {
+        if (typeof matA === "number" && typeof matB === "number") {
             return [[matA], [matB]];
         } else if (!matA[0].length && !matB[0].length) {
             return [[...matA], [...matB]];
@@ -135,17 +142,22 @@ class CustomMath {
         return matC;
     }
     static colStack(matA, matB) {
-        if (typeof (matA) === 'number' && matB.length && !matB[0].length) {
+        if (typeof matA === "number" && matB.length && !matB[0].length) {
             let matD = this.zeros([matB.length, 1]);
             matD.unshift(matA);
             return matD;
-        } else if (matA.length && typeof (matB) === 'number' && !matA[0].length) {
+        } else if (matA.length && typeof matB === "number" && !matA[0].length) {
             let matD = this.zeros([matA.length, 1]);
             matD.push(matB);
             return matD;
-        } else if (typeof (matA) === 'number' && typeof (matB) === 'number') {
+        } else if (typeof matA === "number" && typeof matB === "number") {
             return [matA, matB];
-        } else if ((matA.length && matB.length) && (!matA[0].length && !matB[0].length)) {
+        } else if (
+            matA.length &&
+            matB.length &&
+            !matA[0].length &&
+            !matB[0].length
+        ) {
             return [...matA, ...matB];
         }
         const rowSize = matA.length;
@@ -153,26 +165,32 @@ class CustomMath {
         let matC = this.zeros([rowSize, colSize]);
         for (let i = 0; i < rowSize; i++) {
             for (let j = 0; j < colSize; j++) {
-                matC[i][j] = j < matA[0].length ? matA[i][j] : matB[i][j - matA[0].length];
+                matC[i][j] =
+                    j < matA[0].length ? matA[i][j] : matB[i][j - matA[0].length];
             }
         }
         return matC;
     }
     static multiplyStrassens(matA, matB) {
-        if (!matA.length || !matB.length || matA.length === 1 || matB.length === 1) {
+        if (
+            !matA.length ||
+            !matB.length ||
+            matA.length === 1 ||
+            matB.length === 1
+        ) {
             return matA * matB;
         }
 
         const matAQuarters = this.#split(matA);
         const matBQuarters = this.#split(matB);
-        const a = matAQuarters['1'];
-        const b = matAQuarters['2'];
-        const c = matAQuarters['3'];
-        const d = matAQuarters['4'];
-        const e = matBQuarters['1'];
-        const f = matBQuarters['2'];
-        const g = matBQuarters['3'];
-        const h = matBQuarters['4'];
+        const a = matAQuarters["1"];
+        const b = matAQuarters["2"];
+        const c = matAQuarters["3"];
+        const d = matAQuarters["4"];
+        const e = matBQuarters["1"];
+        const f = matBQuarters["2"];
+        const g = matBQuarters["3"];
+        const h = matBQuarters["4"];
 
         const p1 = this.multiplyStrassens(a, this.subtract(f, h));
         const p2 = this.multiplyStrassens(this.add(a, b), h);
@@ -191,47 +209,76 @@ class CustomMath {
     }
     static getResultString(mat) {
         // \begin{bmatrix}6&0&0\\9&9&9\\8&8&8\\\end{bmatrix}
-        let expression = '\\begin{bmatrix}';
+        let expression = "\\begin{bmatrix}";
         for (let i = 0; i < mat.length; i++) {
             for (let j = 0; j < mat.length; j++) {
                 expression += mat[i][j].toString();
-                expression += j !== mat.length - 1 ? '&' : '';
+                expression += j !== mat.length - 1 ? "&" : "";
             }
-            expression += '\\\\';
+            expression += "\\\\";
         }
-        expression += '\\end{bmatrix}';
+        expression += "\\end{bmatrix}";
         return expression;
     }
     static getMultiplicationString(matA, matB, matC) {
         const resultStringA = CustomMath.getResultString(matA);
         const resultStringB = CustomMath.getResultString(matB);
         const resultStringC = CustomMath.getResultString(matC);
-        const resultString = '\\[' + resultStringA + '*' + resultStringB + '=' + resultStringC + '\\]';
+        const resultString =
+            "\\[" + resultStringA + "*" + resultStringB + "=" + resultStringC + "\\]";
         return resultString;
+    }
+}
+class MultiplicationPerformance {
+    constructor() { }
+    static multiplicationTime(maxSize, strassens = false) {
+        let results = [];
+        let power = 1;
+        let i = 2;
+        while (i <= maxSize) {
+            const matA = CustomMath.ones([i, i]);
+            const matB = CustomMath.ones([i, i]);
+            let t0, t1;
+            if (!strassens) {
+                t0 = performance.now();
+                CustomMath.multiplyNormal(matA, matB);
+                t1 = performance.now();
+            } else {
+                t0 = performance.now();
+                CustomMath.multiplyStrassens(matA, matB);
+                t1 = performance.now();
+            }
+            results.push({ size: i, time: t1 - t0 });
+            power += 1;
+            i = 2 ** power;
+        }
+        return results;
     }
 }
 class Display {
     /*
-    A class used to display the results.
-    Attributes:
-        matA, matB: 
-            Private attributes. Stores the two input matrices after getting values from input fields.
-        matC: 
-            Private attribute. Stores the result matrix.
-    Methods:
-        getInputFields: 
-            Private method. Returns all input fields associated with a matrix (defined by matrix name) given the parent ID.
-        getParagraph: 
-            Private method. Returns a paragraph element given its ID.
-        fillMatrix: 
-            Private method. Populates the values from input fields into a 2D array and returns the array.
-        fillMatrices: 
-            Public method. Sets the matA and matB attributes of the class to values returned by fillMatrix method.
-        multiply: 
-            Public method. Uses either of CustomMath two multiplication functions according to the clicked button (normal vs Strassens).
-        updateResult:
-            Public method. Updates the paragraphs with result strings and calls MathJax to transform the string into image of the mathematical equation.
-    */
+      A class used to display the results.
+      Attributes:
+          matA, matB: 
+              Private attributes. Stores the two input matrices after getting values from input fields.
+          matC: 
+              Private attribute. Stores the result matrix.
+      Methods:
+          getInputFields: 
+              Private method. Returns all input fields associated with a matrix (defined by matrix name) given the parent ID.
+          getParagraph: 
+              Private method. Returns a paragraph element given its ID.
+          fillMatrix: 
+              Private method. Populates the values from input fields into a 2D array and returns the array.
+          fillMatrices: 
+              Public method. Sets the matA and matB attributes of the class to values returned by fillMatrix method.
+          multiply: 
+              Public method. Uses either of CustomMath two multiplication functions according to the clicked button (normal vs Strassens).
+          updateResult:
+              Public method. Updates the paragraphs with result strings and calls MathJax to transform the string into image of the mathematical equation.
+          drawPerformanceCurve:
+              Public method. Draws comparison curves using Chart.js.
+      */
     #matA;
     #matB;
     #matC;
@@ -250,7 +297,7 @@ class Display {
         const matElements = this.#getInputFields(matrixName);
         let mat = [];
         for (let i = 0; i < size; i++) {
-            const rowOfMat = []
+            const rowOfMat = [];
             for (let j = 0; j < size; j++) {
                 const elementIndex = `${i}-${j}`; // Getting the string index based on the id of the input element which is preset in the HTML document
                 const elementValue = matElements[elementIndex].value;
@@ -265,7 +312,7 @@ class Display {
         const sizeB = Math.sqrt(this.#getInputFields(matBName).length);
         let size;
         if (sizeA === sizeB) {
-            size = sizeA
+            size = sizeA;
         } else {
             return;
         }
@@ -273,31 +320,71 @@ class Display {
         this.#matB = this.#fillMatrix(size, matBName);
     }
     multiply(strassens) {
-        this.#matC = strassens ?
-            CustomMath.multiplyStrassens(this.#matA, this.#matB) : CustomMath.multiplyNormal(this.#matA, this.#matB);
+        this.#matC = strassens
+            ? CustomMath.multiplyStrassens(this.#matA, this.#matB)
+            : CustomMath.multiplyNormal(this.#matA, this.#matB);
     }
     updateResult(pName, timePName, time) {
-        const resultString = CustomMath.getMultiplicationString(this.#matA, this.#matB, this.#matC);
+        const resultString = CustomMath.getMultiplicationString(
+            this.#matA,
+            this.#matB,
+            this.#matC
+        );
         const resultParagraph = this.#getParagraph(pName);
         const timeParagraph = this.#getParagraph(timePName);
         resultParagraph.innerText = resultString;
         timeParagraph.innerText = "Time(ms): " + time;
         MathJax.typeset(); // Very Important. Reloads MathJax to take care of changed results.
     }
+    drawPerformanceCurve(maxSize) {
+        const normalData = MultiplicationPerformance.multiplicationTime(
+            maxSize,
+            false
+        );
+        const strassensData = MultiplicationPerformance.multiplicationTime(
+            maxSize,
+            true
+        );
+        new Chart(document.getElementById("plot"), {
+            type: "line",
+            data: {
+                labels: normalData.map((row) => row.size),
+                datasets: [
+                    {
+                        label: "Normal Multiplication",
+                        data: normalData.map((row) => row.time),
+                    },
+                    {
+                        label: "Strassens Multiplication",
+                        data: strassensData.map((row) => row.time),
+                    },
+                ],
+            },
+        });
+    }
 }
 
 let d = new Display();
 const multiplyButtons = document.querySelectorAll('[fill-matrix="true"]');
+const compareButton = document.querySelector('[compare]');
 multiplyButtons.forEach((button) => {
-    button.addEventListener('click', (event) => {
-        const isStrassensMultiplication = event.target.getAttribute("strassens") === "true";
-        const resultPName = isStrassensMultiplication ? 'strassens-result' : 'normal-result';
-        const timePName = isStrassensMultiplication ? 'strassens-time' : 'normal-time';
+    button.addEventListener("click", (event) => {
+        const isStrassensMultiplication =
+            event.target.getAttribute("strassens") === "true";
+        const resultPName = isStrassensMultiplication
+            ? "strassens-result"
+            : "normal-result";
+        const timePName = isStrassensMultiplication
+            ? "strassens-time"
+            : "normal-time";
 
-        d.fillMatrices('matrix-A', 'matrix-B');
+        d.fillMatrices("matrix-A", "matrix-B");
         const t0 = performance.now();
         d.multiply(isStrassensMultiplication);
         const t1 = performance.now();
         d.updateResult(resultPName, timePName, t1 - t0);
     });
+});
+compareButton.addEventListener("click", (event) => {
+    d.drawPerformanceCurve(64);
 });
