@@ -2,7 +2,7 @@
 
 ## Installation
 
-Download the code to your local machine. Open up index.html in your favourite browser. Internet connection is a must to get both MathJax and Chart.js dependencies. Once you are connected, the dependencies is downloaded automatically.
+Download the code to your local machine. Open up index.html in your favourite browser. Internet connection is a must to get both MathJax and Chart.js dependencies. Once you are connected, the dependencies are downloaded automatically.
 
 ## To get an SVG image of the equations
 
