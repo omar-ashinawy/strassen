@@ -10,4 +10,4 @@ Right click on the paragraph where the matrices shows up, then choose Math Setti
 
 ## Demo
 
-Populate both the 4x4 matrices with values. You have to populate all input fields. Otherwise, NaNs will pop up in the results. Click on either buttons to see the result with the time taken to evaluate.
+Populate both the 4x4 matrices with values. You have to populate all input fields. Otherwise, NaNs will pop up in the results. Click on either buttons to see the result with the time taken to evaluate. You can click on the compare button to draw a line graph comparing the time taken multiplying matrices with different sizes using both methods.
